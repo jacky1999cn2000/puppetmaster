@@ -25,49 +25,35 @@ module.exports = {
     await page.goto(config.youlikehits_twitter_followers);
     await page.waitFor(500);
 
-    // let followButtons = await page.$$('.follow > center > center > a:nth-child(1)');
-    // let confirmButtons = await page.$$('.follow > center > center > a:nth-child(2)');
-    //
-    // console.log('followButtons ', followButtons.length);
-    // console.log('confirmButtons ', confirmButtons.length);
+    const ids = await page.evaluate(
+      () => [...document.querySelectorAll('.follow')]
+      .map(element => element.getAttribute('id'))
+    );
 
-    // for (let i = 0; i < followButtons.length; i++) {
-    //
-    //   //await page.click('#follow543987 > center > center > a:nth-child(1)');
-    //   await followButtons[i].click();
-    //
-    //   browser.on('targetcreated', async target => {
-    //     if (target.url() !== 'about:blank') {
-    //       logger.log(`closing popup: ${target.url()}`, 1);
-    //       try {
-    //         const twitterpage = await target.page();
-    //         await twitterpage.click('#follow_btn_form > button');
-    //         await twitterpage.waitFor(500);
-    //         await twitterpage.close();
-    //       } catch (e) {}
-    //     }
-    //   });
-    //
-    //   // await page.click('#follow543810 > center > center > a:nth-child(2)');
-    //   await confirmButtons[i].click();
-    // }
+    for (let i = 0; i < ids.length; i++) {
 
-    await page.click('#follow544495 > center > center > a:nth-child(1)');
+      let followButton = '#' + ids[i] + ' > center > center > a:nth-child(1)';
+      let confirmButton = '#' + ids[i] + ' > center > center > a:nth-child(2)';
 
-    browser.on('targetcreated', async target => {
-      if (target.url() !== 'about:blank') {
-        logger.log(`closing popup: ${target.url()}`, 1);
-        try {
-          const twitterpage = await target.page();
-          await twitterpage.click('#follow_btn_form > button');
-          await twitterpage.waitFor(500);
-          await twitterpage.close();
-        } catch (e) {}
-      }
-    });
+      await page.click(followButton);
 
-    await page.waitFor(2000);
-    await page.click('#follow544495 > center > center > a:nth-child(2)');
+      browser.on('targetcreated', async target => {
+        if (target.url() !== 'about:blank') {
+          logger.log(`following: ${target.url()}`, 1);
+          try {
+            const twitterpage = await target.page();
+            await twitterpage.waitFor(500);
+            await twitterpage.click('#follow_btn_form > button');
+            await twitterpage.waitFor(500);
+            await twitterpage.close();
+          } catch (e) {}
+        }
+      });
+
+      await page.waitFor(2000);
+      await page.click(confirmButton);
+      await page.waitFor(2000);
+    }
 
   }
 

@@ -15,15 +15,6 @@ module.exports = async (page, browser, config) => {
 
   await youlikehits.login(page, browser, config);
 
-  let twitterFollowerURLs = await youlikehits.getTwitterFollowerURLs(page, browser, config);
-
-  console.log('twitterFollowerURLs ', twitterFollowerURLs);
-  // let twitterFollowURLs = await youlikehits.getTwitterFollowURLs(browser, config);
-
-  // twitter.login(browser, config);
-
-  // let listPageHTML = await nightmare
-  //   .goto(twitterFollowURLs[0])
-  //   .wait('body');
+  await youlikehits.follow(page, browser, config);
 
 }

@@ -15,6 +15,9 @@ module.exports = async (page, browser, config) => {
 
   await youlikehits.login(page, browser, config);
 
-  await youlikehits.follow(page, browser, config);
+  for (let i = 0; i < 5; i++) {
+    await youlikehits.follow(page, browser, config);
+  }
+
 
 }

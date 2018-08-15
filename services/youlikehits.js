@@ -52,7 +52,7 @@ module.exports = {
 
       await page.waitFor(2000);
       await page.click(confirmButton);
-      await page.waitFor(2000);
+      await page.waitFor(4000);
     }
 
   }

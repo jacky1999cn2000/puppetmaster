@@ -35,24 +35,43 @@ module.exports = {
       let followButton = '#' + ids[i] + ' > center > center > a:nth-child(1)';
       let confirmButton = '#' + ids[i] + ' > center > center > a:nth-child(2)';
 
+      let twitterpage;
+      let skip = 'no';
+
       await page.click(followButton);
 
       browser.on('targetcreated', async target => {
         if (target.url() !== 'about:blank') {
           logger.log(`following: ${target.url()}`, 1);
           try {
-            const twitterpage = await target.page();
-            await twitterpage.waitFor(500);
+            twitterpage = await target.page();
+            await twitterpage.waitFor("#follow_btn_form > button", {
+              timeout: 1000
+            });
             await twitterpage.click('#follow_btn_form > button');
             await twitterpage.waitFor(500);
             await twitterpage.close();
-          } catch (e) {}
+          } catch (e) {
+            console.log('error ', e);
+            await twitterpage.close();
+            skip = 'yes';
+          }
         }
       });
-
+      console.log('skip ', skip);
       await page.waitFor(2000);
-      await page.click(confirmButton);
-      await page.waitFor(4000);
+      if (skip == 'no') {
+        console.log('confirm');
+        await page.click(confirmButton);
+        await page.waitFor(6000);
+      } else {
+        console.log('to skip');
+        let skipLink = '#' + ids[i] + ' > center > font > a';
+        await page.click(skipLink);
+        await page.waitFor(1000);
+      }
+
+
     }
 
   }

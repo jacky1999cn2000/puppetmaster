@@ -22,9 +22,11 @@ module.exports = {
 
     logger.log('youlikehits : follow');
 
+    // go to twitter follower link
     await page.goto(config.youlikehits_twitter_followers);
     await page.waitFor(500);
 
+    // for some reason, there are 2 kinds of follow links (.followp and .follow), so we query both and combine them together
     const followpIds = await page.evaluate(
       () => [...document.querySelectorAll('.followp')]
       .map(element => element.getAttribute('id'))
@@ -37,13 +39,14 @@ module.exports = {
 
     const ids = followpIds.concat(followIds);
 
-    console.log('ids ', ids.length);
+    // console.log('ids ', ids.length);
 
     for (let i = 0; i < ids.length; i++) {
 
-      console.log('i ', i);
-      console.log('id ', ids[i]);
+      // console.log('i ', i);
+      // console.log('id ', ids[i]);
 
+      // based on id, get follow/confirm button
       let followButton = '#' + ids[i] + ' > center > center > a:nth-child(1)';
       let confirmButton = '#' + ids[i] + ' > center > center > a:nth-child(2)';
 
@@ -51,6 +54,7 @@ module.exports = {
       let decision = 'RESET';
       let state = 'RESET';
 
+      // click follow button, and capture the pop up new window
       await page.click(followButton);
 
       browser.on('targetcreated', async target => {
@@ -75,6 +79,10 @@ module.exports = {
           } catch (e) {
             // console.log(e.name);
             // console.log(e.message);
+
+            // for "of null" error, we need to skip the item, and then restart the process;
+            // for "timeout" error, we need to skip the item, and continue
+            // otherwise, confirm and continue 
             if (e.message.indexOf('of null') != -1) {
               decision = 'SKIP';
               state = 'EXIT';
@@ -115,9 +123,7 @@ module.exports = {
 
       }
 
-
-    }
-
-  }
+    } // for loop
+  } // follow method
 
 }

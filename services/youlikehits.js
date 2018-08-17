@@ -37,11 +37,11 @@ module.exports = {
 
     const ids = followpIds.concat(followIds);
 
-    console.log('ids ',ids.length);
+    console.log('ids ', ids.length);
 
     for (let i = 0; i < ids.length; i++) {
 
-      console.log('i ',i);
+      console.log('i ', i);
       console.log('id ', ids[i]);
 
       let followButton = '#' + ids[i] + ' > center > center > a:nth-child(1)';
@@ -64,24 +64,27 @@ module.exports = {
             await twitterpage.waitFor("#follow_btn_form > button", {
               timeout: 1000
             });
-            // await page.waitFor(4000);
+
             await twitterpage.click('#follow_btn_form > button');
-            // await twitterpage.waitFor('form.unfollow > button',{
-            //   timeout: 1000
-            // });
             await twitterpage.waitFor(1000);
+
             decision = 'CONFIRM';
             state = 'CONTINUE';
+
             await twitterpage.close();
           } catch (e) {
-            // console.log('error ', e);
-            console.log('error');
-            console.log('\rname', e.name);
-            console.log('\rmessage',e.message);
-            if(e.message.indexOf('of null') != -1){
+            // console.log(e.name);
+            // console.log(e.message);
+            if (e.message.indexOf('of null') != -1) {
+              decision = 'SKIP';
               state = 'EXIT';
+            } else if (e.message.indexOf('timeout') != -1) {
+              decision = 'SKIP';
+              state = 'CONTINUE';
+            } else {
+              decision = 'CONFIRM';
+              state = 'CONTINUE';
             }
-            decision = 'SKIP';
             await twitterpage.close();
           }
 
@@ -91,21 +94,25 @@ module.exports = {
 
       await page.waitFor(2000);
 
+      console.log(decision);
+      console.log(state);
+
       if (decision == 'CONFIRM') {
-        console.log(decision);
-        console.log(state);
+
         await page.click(confirmButton);
         await page.waitFor(6000);
+
       } else {
-        console.log(decision);
-        console.log(state);
+
         let skipLink = '#' + ids[i] + ' > center > font > a';
         await page.click(skipLink);
         await page.waitFor(4000);
-        if(state == 'EXIT'){
+
+        if (state == 'EXIT') {
           console.log('exit...');
           process.exit(1);
         }
+
       }
 
 

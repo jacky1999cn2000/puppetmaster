@@ -11,7 +11,7 @@ const parser = require('../services/parser');
 module.exports = async (page, browser, config) => {
 
 
-  await twitter.login(page, browser, config);
+  await twitter.login(page, browser, config, 2);
 
   await youlikehits.login(page, browser, config);
 

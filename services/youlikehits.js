@@ -2,7 +2,6 @@
 
 const _ = require('lodash');
 const logger = require('./logger');
-const parser = require('./parser');
 
 module.exports = {
 
@@ -82,7 +81,7 @@ module.exports = {
 
             // for "of null" error, we need to skip the item, and then restart the process;
             // for "timeout" error, we need to skip the item, and continue
-            // otherwise, confirm and continue 
+            // otherwise, confirm and continue
             if (e.message.indexOf('of null') != -1) {
               decision = 'SKIP';
               state = 'EXIT';

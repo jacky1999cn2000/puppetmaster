@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 
 const config = require('./config.json');
 
+const setup = require('./modules/setup');
 const twitter = require('./modules/twitter');
 
 async function execute() {
@@ -27,6 +28,8 @@ async function execute() {
     width,
     height
   });
+
+  await setup(pages[0], browser, config);
 
   switch (config.task) {
     case 'twitter:follow':

@@ -40,10 +40,30 @@ module.exports = {
 
     // console.log('ids ', ids.length);
 
+    // similarly, get all points for each link
+    const followpPoints = await page.evaluate(
+      () => [...document.querySelectorAll('.followp > center')]
+      .map(element => parseInt(element.innerText.split(':')[1]))
+    );
+
+    const followPoints = await page.evaluate(
+      () => [...document.querySelectorAll('.follow > center')]
+      .map(element => parseInt(element.innerText.split(':')[1]))
+    );
+
+    const points = followpPoints.concat(followPoints);
+
+    // console.log('points ', points.length);
+
     for (let i = 0; i < ids.length; i++) {
 
       // console.log('i ', i);
       // console.log('id ', ids[i]);
+      // console.log('point ', points[i]);
+
+      if (points[i] < 3) {
+        return false;
+      }
 
       // based on id, get follow/confirm button
       let followButton = '#' + ids[i] + ' > center > center > a:nth-child(1)';
@@ -123,6 +143,9 @@ module.exports = {
       }
 
     } // for loop
+
+    return true;
+
   } // follow method
 
 }

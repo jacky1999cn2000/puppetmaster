@@ -146,6 +146,40 @@ module.exports = {
 
     return true;
 
-  } // follow method
+  }, // twitterfollow method
+
+  twittertweet: async (page, browser, config) => {
+
+    logger.log('youlikehits:twittertweet',2);
+
+    // go to twitter tweets link
+    await page.goto(config.youlikehits_twitter_tweets);
+    await page.waitFor(500);
+
+
+    const followIds = await page.evaluate(
+      () => [...document.querySelectorAll('.follow')]
+      .map(element => element.getAttribute('id'))
+    );
+
+    let frames = await page.frames();
+    let urls = frames.map(frame => frame['_navigationURL']);
+
+    console.log('frames ',frames);
+    console.log('frmes ', frames.length);
+
+    console.log('urls ',urls);
+    console.log('urls ', urls.length);
+
+    // for some reason, there are 2 kinds of follow links (.followp and .follow), so we query both and combine them together
+    // const followLinks = await page.evaluate(
+    //   () => [...document.querySelectorAll('body > center > a:nth-child(1)')]
+    //   .map(element => element.getAttribute('id'))
+    // );
+    //
+    // console.log('followLinks ',followLinks);
+    // console.log('followLinks ',followLinks.length);
+
+  } // twittertweet method
 
 }

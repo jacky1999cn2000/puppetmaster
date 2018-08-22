@@ -17,6 +17,22 @@ module.exports = {
       }
     }
 
+  },
+
+  tweet: async (page, browser, config) => {
+
+    logger.log('twitter:tweet');
+
+    await youlikehits.twittertweet(page, browser, config);
+
+    // run follow automation for 5 loops (to avoid rate limit), and break if points below 3
+    // for (let i = 0; i < 5; i++) {
+    //   let status = await youlikehits.twitterfollow(page, browser, config);
+    //   if (!status) {
+    //     break;
+    //   }
+    // }
+
   }
 
 }

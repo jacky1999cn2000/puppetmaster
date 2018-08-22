@@ -29,11 +29,11 @@ async function execute() {
     height
   });
 
-  await setup(pages[0], browser, config);
+  await setup.init(pages[0], browser, config);
 
   switch (config.task) {
     case 'twitter:follow':
-      twitter(pages[0], browser, config);
+      twitter.follow(pages[0], browser, config);
       break;
     default:
       console.error('unknown task');

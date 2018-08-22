@@ -2,11 +2,18 @@
 
 const youlikehits = require('../services/youlikehits');
 const twitter = require('../services/twitter');
+const logger = require('../services/logger');
 
-module.exports = async (page, browser, config) => {
+module.exports = {
 
-  await twitter.login(page, browser, config);
+  init: async (page, browser, config) => {
 
-  await youlikehits.login(page, browser, config);
+    logger.log('setup:init');
+
+    await twitter.login(page, browser, config);
+
+    await youlikehits.login(page, browser, config);
+
+  }
 
 }

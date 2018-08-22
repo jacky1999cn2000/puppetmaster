@@ -7,7 +7,7 @@ module.exports = {
 
   login: async (page, browser, config) => {
 
-    logger.log('twitter : login');
+    logger.log('twitter:login',2);
 
     await page.goto(config.twitter_url);
     await page.waitFor(500);

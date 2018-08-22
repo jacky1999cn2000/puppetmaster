@@ -7,7 +7,7 @@ module.exports = {
 
   login: async (page, browser, config) => {
 
-    logger.log('youlikehits : login');
+    logger.log('youlikehits:login',2);
 
     await page.goto(config.youlikehits_url);
     await page.waitFor(500);
@@ -17,9 +17,9 @@ module.exports = {
     await page.waitFor(500);
   },
 
-  follow: async (page, browser, config) => {
+  twitterfollow: async (page, browser, config) => {
 
-    logger.log('youlikehits : follow');
+    logger.log('youlikehits:twitterfollow',2);
 
     // go to twitter follower link
     await page.goto(config.youlikehits_twitter_followers);

@@ -1,17 +1,22 @@
 'use strict';
 
 const youlikehits = require('../services/youlikehits');
+const logger = require('../services/logger');
 
-module.exports = async (page, browser, config) => {
+module.exports = {
 
-  // run follow automation for 5 loops (avoid rate limit), and break if points below 3
-  for (let i = 0; i < 5; i++) {
-    let status = await youlikehits.follow(page, browser, config);
-    if (!status) {
-      break;
+  follow: async (page, browser, config) => {
+
+    logger.log('twitter:follow');
+
+    // run follow automation for 5 loops (to avoid rate limit), and break if points below 3
+    for (let i = 0; i < 5; i++) {
+      let status = await youlikehits.twitterfollow(page, browser, config);
+      if (!status) {
+        break;
+      }
     }
-  }
 
-  console.log('outside');
+  }
 
 }

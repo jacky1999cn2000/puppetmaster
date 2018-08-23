@@ -35,8 +35,8 @@ async function execute() {
     case 'twitter:follow':
       twitter.follow(pages[0], browser, config);
       break;
-    case 'twitter:tweet':
-      twitter.tweet(pages[0], browser, config);
+    case 'twitter:like':
+      twitter.like(pages[0], browser, config);
       break;
     default:
       console.error('unknown task');

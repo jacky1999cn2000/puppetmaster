@@ -7,7 +7,7 @@ module.exports = {
 
   login: async (page, browser, config) => {
 
-    logger.log('youlikehits:login',2);
+    logger.log('youlikehits:login', 2);
 
     await page.goto(config.youlikehits_url);
     await page.waitFor(500);
@@ -19,7 +19,7 @@ module.exports = {
 
   twitterfollow: async (page, browser, config) => {
 
-    logger.log('youlikehits:twitterfollow',2);
+    logger.log('youlikehits:twitterfollow', 2);
 
     // go to twitter follower link
     await page.goto(config.youlikehits_twitter_followers);
@@ -148,37 +148,115 @@ module.exports = {
 
   }, // twitterfollow method
 
-  twittertweet: async (page, browser, config) => {
+  twitterlike: async (page, browser, config) => {
 
-    logger.log('youlikehits:twittertweet',2);
+    logger.log('youlikehits:twitterlike', 2);
 
     // go to twitter tweets link
-    await page.goto(config.youlikehits_twitter_tweets);
-    await page.waitFor(500);
+    await page.goto(config.youlikehits_twitter_likes, {
+      waituntil: "networkidle0"
+    });
 
-
-    const followIds = await page.evaluate(
-      () => [...document.querySelectorAll('.follow')]
+    const cardIds = await page.evaluate(
+      () => [...document.querySelectorAll('.cards')]
       .map(element => element.getAttribute('id'))
     );
 
-    let frames = await page.frames();
-    let urls = frames.map(frame => frame['_navigationURL']);
+    console.log('cardIds ', cardIds);
 
-    console.log('frames ',frames);
-    console.log('frmes ', frames.length);
+    const frames = await page.frames();
 
-    console.log('urls ',urls);
-    console.log('urls ', urls.length);
+    const tweetframes = await frames.filter(frame => frame['_navigationURL'].indexOf('tweetrender') != -1);
 
-    // for some reason, there are 2 kinds of follow links (.followp and .follow), so we query both and combine them together
-    // const followLinks = await page.evaluate(
-    //   () => [...document.querySelectorAll('body > center > a:nth-child(1)')]
-    //   .map(element => element.getAttribute('id'))
-    // );
-    //
-    // console.log('followLinks ',followLinks);
-    // console.log('followLinks ',followLinks.length);
+    let likeButtons = [];
+    let confirmButtons = [];
+
+    for (let tweetframe of tweetframes) {
+      let likeButton = await tweetframe.$('body > center > a:nth-child(1)');
+      let confirmButton = await tweetframe.$('body > center > a:nth-child(2)');
+
+      likeButtons.push(likeButton);
+      confirmButtons.push(confirmButton);
+    }
+
+    console.log('likeButtons.length ', likeButtons.length);
+    console.log('confirmButtons.length ', confirmButtons.length);
+
+    for (let i = 0; i < cardIds.length; i++) {
+
+      let twitterpage = null;
+      let decision = 'RESET';
+      let state = 'RESET';
+
+      await likeButtons[i].click();
+
+      browser.on('targetcreated', async target => {
+
+        if (target.url() !== 'about:blank') {
+
+          await logger.log(`tweeting: ${target.url()}`, 1);
+
+          try {
+            twitterpage = await target.page();
+            await twitterpage.waitFor("#favorite_btn_form > fieldset > input", {
+              timeout: 1000
+            });
+
+            await twitterpage.click('#favorite_btn_form > fieldset > input');
+            await twitterpage.waitFor(1000);
+
+            decision = 'CONFIRM';
+            state = 'CONTINUE';
+
+            await twitterpage.close();
+          } catch (e) {
+            // console.log(e.name);
+            // console.log(e.message);
+
+            // for "of null" error, we need to skip the item, and then restart the process;
+            // for "timeout" error, we need to skip the item, and continue
+            // otherwise, confirm and continue
+            if (e.message.indexOf('of null') != -1) {
+              decision = 'SKIP';
+              state = 'EXIT';
+            } else if (e.message.indexOf('timeout') != -1) {
+              decision = 'SKIP';
+              state = 'CONTINUE';
+            } else {
+              decision = 'CONFIRM';
+              state = 'CONTINUE';
+            }
+            await twitterpage.close();
+          }
+
+        }
+
+      });
+
+      await page.waitFor(2000);
+
+      console.log(decision);
+      console.log(state);
+
+      if (decision == 'CONFIRM') {
+
+        await confirmButtons[i].click();
+        await page.waitFor(6000);
+
+      } else {
+
+        let skipLink = '#' + cardIds[i] + ' > center > font > a:nth-child(1)';
+        await page.click(skipLink);
+        await page.waitFor(4000);
+
+        if (state == 'EXIT') {
+          console.log('exit...');
+          process.exit(1);
+        }
+
+      }
+
+    } // for loop
 
   } // twittertweet method
 

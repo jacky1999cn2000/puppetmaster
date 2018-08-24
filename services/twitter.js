@@ -9,8 +9,9 @@ module.exports = {
 
     logger.log('twitter:login', 2);
 
-    await page.goto(config.twitter_url);
-    await page.waitFor(500);
+    await page.goto(config.twitter_url, {
+      waituntil: "networkidle0"
+    });
     await page.click('#doc > div > div.StaticLoggedOutHomePage-content > div.StaticLoggedOutHomePage-cell.StaticLoggedOutHomePage-utilityBlock > div.StaticLoggedOutHomePage-signupBlock > div.StaticLoggedOutHomePage-signupHeader > a');
     await page.waitFor(500);
     await page.type('#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(2) > input', config['twitter_username' + config.whichuser]);

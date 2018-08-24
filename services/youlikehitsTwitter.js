@@ -61,7 +61,7 @@ module.exports = {
 
         if (target.url() !== 'about:blank') {
 
-          await logger.log(`following: ${target.url()}`, 1);
+          // await logger.log(`following: ${target.url()}`, 1);
 
           try {
             twitterpage = await target.page();
@@ -151,7 +151,7 @@ module.exports = {
 
     const ids = cardpIds.concat(cardIds);
 
-    // don't need to get points since we can only make 15 likes per hour, so simply return if the page not has likes 
+    // don't need to get points since we can only make 15 likes per hour, so simply return if the page not has likes
     if (ids.length == 0) {
       return false;
     }
@@ -186,7 +186,7 @@ module.exports = {
 
         if (target.url() !== 'about:blank') {
 
-          await logger.log(`liking: ${target.url()}`, 1);
+          // await logger.log(`liking: ${target.url()}`, 1);
 
           try {
             twitterpage = await target.page();

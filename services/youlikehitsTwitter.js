@@ -42,7 +42,7 @@ module.exports = {
 
     for (let i = 0; i < ids.length; i++) {
 
-      if (points[i] < 3) {
+      if (typeof points[i] != 'undefined' && points[i] < 2) {
         return false;
       }
 
@@ -138,17 +138,23 @@ module.exports = {
       waituntil: "networkidle0"
     });
 
-    // get cards ids - used later to get skipLink
+    // for some reason, there are 2 kinds of like links (.cardsp and .cards), so we query both and combine them together
+    const cardpIds = await page.evaluate(
+      () => [...document.querySelectorAll('.cardsp')]
+      .map(element => element.getAttribute('id'))
+    );
+
     const cardIds = await page.evaluate(
       () => [...document.querySelectorAll('.cards')]
       .map(element => element.getAttribute('id'))
     );
 
-    // similarly, get all points for each link
-    const points = await page.evaluate(
-      () => [...document.querySelectorAll('.cards > center')]
-      .map(element => parseInt(element.innerText.split(':')[1]))
-    );
+    const ids = cardpIds.concat(cardIds);
+
+    // don't need to get points since we can only make 15 likes per hour, so simply return if the page not has likes 
+    if (ids.length == 0) {
+      return false;
+    }
 
     // get all iframes on the page, and filter for 'like' iframes
     const frames = await page.frames();
@@ -167,11 +173,7 @@ module.exports = {
       confirmButtons.push(confirmButton);
     }
 
-    for (let i = 0; i < cardIds.length; i++) {
-
-      if (points[i] < 3) {
-        return false;
-      }
+    for (let i = 0; i < ids.length; i++) {
 
       let twitterpage = null;
       let decision = 'RESET';
@@ -225,8 +227,8 @@ module.exports = {
 
       await page.waitFor(2000);
 
-      console.log(decision);
-      console.log(state);
+      // console.log(decision);
+      // console.log(state);
 
       if (decision == 'CONFIRM') {
 

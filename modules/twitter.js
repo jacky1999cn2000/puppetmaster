@@ -14,6 +14,7 @@ module.exports = {
     for (let i = 0; i < 5; i++) {
       let status = await youlikehitsTwitter.follow(page, browser, config);
       if (!status) {
+        logger.log('break twitter:follow');
         break;
       }
     }
@@ -28,6 +29,7 @@ module.exports = {
     for (let i = 0; i < 5; i++) {
       let status = await youlikehitsTwitter.like(page, browser, config);
       if (!status) {
+        logger.log('break twitter:like');
         break;
       }
     }

@@ -31,15 +31,12 @@ async function execute() {
 
   await setup.init(pages[0], browser, config);
 
-  switch (config.task + ':' + config.subtask) {
-    case 'twitter:follow':
-      twitter.follow(pages[0], browser, config);
-      break;
-    case 'twitter:like':
-      twitter.like(pages[0], browser, config);
-      break;
-    default:
-      console.error('unknown task');
+  if (!config.twitter_follow_done) {
+    await twitter.follow(pages[0], browser, config);
+  }
+
+  if (!config.twitter_like_done) {
+    await twitter.like(pages[0], browser, config);
   }
 
 };

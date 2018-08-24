@@ -29,6 +29,10 @@ module.exports = {
 
     }
 
+    config.counter = 2;
+    config.twitter_follow_done = true;
+    manager.save(config);
+
   },
 
   like: async (page, browser, config) => {
@@ -51,6 +55,10 @@ module.exports = {
       }
 
     }
+
+    config.counter = 2;
+    config.twitter_like_done = true;
+    manager.save(config);
 
   }
 

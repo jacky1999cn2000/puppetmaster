@@ -31,7 +31,7 @@ async function execute() {
 
   await setup.init(pages[0], browser, config);
 
-  switch (config.task) {
+  switch (config.task + ':' + config.subtask) {
     case 'twitter:follow':
       twitter.follow(pages[0], browser, config);
       break;

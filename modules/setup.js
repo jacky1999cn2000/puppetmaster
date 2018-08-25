@@ -23,9 +23,14 @@ module.exports = {
 
     config = await manager.next(config);
 
-    console.log('config ', config);
-
     await youlikehits.switchTwitterUser(page, browser, config);
+
+    if (config.changeyoulikehitsuser) {
+      logger.log('change youlikehits user ', 2);
+      config.changeyoulikehitsuser = false;
+      config.whichyoulikehitsuser = config.whichyoulikehitsuser + 1 > config.youlikehits_user_max ? 1 : config.whichyoulikehitsuser + 1;
+      manager.save(config);
+    }
 
     process.exit(0);
   }

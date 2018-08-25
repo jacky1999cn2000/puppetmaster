@@ -31,15 +31,15 @@ async function execute() {
 
   await setup.init(pages[0], browser, config);
 
-  if (!config.twitter_follow_done) {
+  if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_follow_done) {
     await twitter.follow(pages[0], browser, config);
   }
 
-  if (!config.twitter_like_done) {
+  if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_like_done) {
     await twitter.like(pages[0], browser, config);
   }
 
-  if (!config.twitter_retweet_done) {
+  if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_retweet_done) {
     await twitter.retweet(pages[0], browser, config);
   }
 

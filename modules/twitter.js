@@ -57,6 +57,32 @@ module.exports = {
     config.twitter_like_done = true;
     manager.save(config);
 
+  },
+
+  retweet: async (page, browser, config) => {
+
+    logger.log('twitter:retweet');
+
+    // run follow automation for 2 loops
+    let counter = config.twitter_retweet_counter;
+
+    while (counter > 0) {
+
+      counter--;
+      config.twitter_retweet_counter = counter;
+      manager.save(config);
+
+      let status = await youlikehitsTwitter.retweet(page, browser, config);
+      if (!status) {
+        logger.log('break twitter:retweet');
+        break;
+      }
+
+    }
+
+    config.twitter_retweet_done = true;
+    manager.save(config);
+
   }
 
 }

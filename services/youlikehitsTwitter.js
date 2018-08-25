@@ -252,6 +252,131 @@ module.exports = {
 
     return true;
 
-  } // like method
+  }, // like method
+
+  retweet: async (page, browser, config) => {
+
+    logger.log('youlikehitsTwitter:retweet', 2);
+
+    // go to twitter retweets link
+    await page.goto(config.youlikehits_twitter_retweets, {
+      waituntil: "networkidle0"
+    });
+
+    // for some reason, there are 2 kinds of retweets links (.cardsp and .cards), so we query both and combine them together
+    const cardpIds = await page.evaluate(
+      () => [...document.querySelectorAll('.cardsp')]
+      .map(element => element.getAttribute('id'))
+    );
+
+    const cardIds = await page.evaluate(
+      () => [...document.querySelectorAll('.cards')]
+      .map(element => element.getAttribute('id'))
+    );
+
+    const ids = cardpIds.concat(cardIds);
+
+    // don't need to get points since we won't retweet too many, so simply return if the page not has likes
+    if (ids.length == 0) {
+      return false;
+    }
+
+    // get all iframes on the page, and filter for 'retweet' iframes
+    const frames = await page.frames();
+
+    const retweetframes = await frames.filter(frame => frame['_navigationURL'].indexOf('retweetrender') != -1);
+
+    // get retweet & confirm buttons for each iframe
+    let retweetButtons = [];
+    let confirmButtons = [];
+
+    for (let retweetframe of retweetframes) {
+      let retweetButton = await retweetframe.$('body > center > a:nth-child(1)');
+      let confirmButton = await retweetframe.$('body > center > a:nth-child(2)');
+
+      retweetButtons.push(retweetButton);
+      confirmButtons.push(confirmButton);
+    }
+
+    for (let i = 0; i < ids.length; i++) {
+
+      let twitterpage = null;
+      let decision = 'RESET';
+      let state = 'RESET';
+
+      // click retweet button, and capture the pop up new window
+      await retweetButtons[i].click();
+
+      browser.on('targetcreated', async target => {
+
+        if (target.url() !== 'about:blank') {
+
+          // await logger.log(`retweeting: ${target.url()}`, 1);
+
+          try {
+            twitterpage = await target.page();
+            await twitterpage.waitFor("#retweet_btn_form > fieldset > input", {
+              timeout: 1000
+            });
+
+            await twitterpage.click('#retweet_btn_form > fieldset > input');
+            await twitterpage.waitFor(1000);
+
+            decision = 'CONFIRM';
+            state = 'CONTINUE';
+
+            await twitterpage.close();
+          } catch (e) {
+            // console.log(e.name);
+            // console.log(e.message);
+
+            // for "of null" error, we need to skip the item, and then restart the process;
+            // for "timeout" error, we need to skip the item, and continue
+            // otherwise, confirm and continue
+            if (e.message.indexOf('of null') != -1) {
+              decision = 'SKIP';
+              state = 'EXIT';
+            } else if (e.message.indexOf('timeout') != -1) {
+              decision = 'SKIP';
+              state = 'CONTINUE';
+            } else {
+              decision = 'CONFIRM';
+              state = 'CONTINUE';
+            }
+            await twitterpage.close();
+          }
+
+        }
+
+      });
+
+      await page.waitFor(2000);
+
+      // console.log(decision);
+      // console.log(state);
+
+      if (decision == 'CONFIRM') {
+
+        await confirmButtons[i].click();
+        await page.waitFor(6000);
+
+      } else {
+
+        let skipLink = '#' + cardIds[i] + ' > center > font > a:nth-child(1)';
+        await page.click(skipLink);
+        await page.waitFor(4000);
+
+        if (state == 'EXIT') {
+          console.log('exit...');
+          process.exit(1);
+        }
+
+      }
+
+    } // for loop
+
+    return true;
+
+  } // retweet method
 
 }

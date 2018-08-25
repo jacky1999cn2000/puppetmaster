@@ -21,8 +21,10 @@ module.exports = {
 
     config.twitter_follow_done = false;
     config.twitter_like_done = false;
+    config.twitter_retweet_done = false;
     config.twitter_follow_counter = 1;
     config.twitter_like_counter = 1;
+    config.twitter_retweet_counter = 1;
     config.whichtwitteruser = config.whichtwitteruser + 1 > config.twitter_user_max ? 1 : config.whichtwitteruser + 1;
 
     jsonfile.writeFileSync('./config.json', config);

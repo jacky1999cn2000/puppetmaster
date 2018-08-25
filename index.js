@@ -39,6 +39,10 @@ async function execute() {
     await twitter.like(pages[0], browser, config);
   }
 
+  if (!config.twitter_retweet_done) {
+    await twitter.retweet(pages[0], browser, config);
+  }
+
   await setup.reset(pages[0], browser, config);
 
 };

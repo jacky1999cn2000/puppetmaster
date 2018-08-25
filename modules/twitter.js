@@ -11,13 +11,13 @@ module.exports = {
 
     logger.log('twitter:follow');
 
-    // run follow automation for 5 loops (to avoid rate limit), and break if points below 3
-    let counter = config.counter;
+    // run follow automation for 5 loops (to avoid rate limit), and break if points below 2
+    let counter = config.twitter_follow_counter;
 
     while (counter > 0) {
 
       counter--;
-      config.counter = counter;
+      config.twitter_follow_counter = counter;
       manager.save(config);
       console.log('counter', counter);
 
@@ -29,7 +29,7 @@ module.exports = {
 
     }
 
-    config.counter = 2;
+    config.twitter_follow_counter = 5;
     config.twitter_follow_done = true;
     manager.save(config);
 
@@ -39,14 +39,15 @@ module.exports = {
 
     logger.log('twitter:like');
 
-    // run follow automation for 5 loops (to avoid rate limit), and break if points below 3
-    let counter = config.counter;
+    // run follow automation for 5 loops (don't need to watch points since we can't like more than 15 posts per hour)
+    let counter = config.twitter_like_counter;
 
     while (counter > 0) {
 
       counter--;
-      config.counter = counter;
+      config.twitter_like_counter = counter;
       manager.save(config);
+      console.log('counter', counter);
 
       let status = await youlikehitsTwitter.like(page, browser, config);
       if (!status) {
@@ -56,7 +57,7 @@ module.exports = {
 
     }
 
-    config.counter = 2;
+    config.twitter_like_counter = 2;
     config.twitter_like_done = true;
     manager.save(config);
 

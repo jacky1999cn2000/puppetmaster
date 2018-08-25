@@ -31,13 +31,15 @@ async function execute() {
 
   await setup.init(pages[0], browser, config);
 
-  if (!config.twitter_follow_done) {
-    await twitter.follow(pages[0], browser, config);
-  }
+  // if (!config.twitter_follow_done) {
+  //   await twitter.follow(pages[0], browser, config);
+  // }
+  //
+  // if (!config.twitter_like_done) {
+  //   await twitter.like(pages[0], browser, config);
+  // }
 
-  if (!config.twitter_like_done) {
-    await twitter.like(pages[0], browser, config);
-  }
+  await setup.reset(pages[0], browser, config);
 
 };
 

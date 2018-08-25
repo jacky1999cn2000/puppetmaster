@@ -22,6 +22,9 @@ module.exports = {
 
     logger.log('youlikehits:switchTwitterUser', 2);
 
+    let expectedhandle = config['twitter_handle' + config.whichtwitteruser];
+    console.log('expectedhandle ', expectedhandle);
+
     await page.goto(config.youlikehits_twitter_users, {
       waituntil: "networkidle0"
     });
@@ -31,13 +34,27 @@ module.exports = {
       .map(element => element.getAttribute('id'))
     );
 
-    const cardTexts = await page.evaluate(
+    const handles = await page.evaluate(
       () => [...document.querySelectorAll('.cards')]
       .map(element => element.innerText.split('\n')[0])
     );
 
     console.log('cardIds ', cardIds);
-    console.log('cardTexts ', cardTexts);
+    console.log('handles ', handles);
+
+    let cardId;
+
+    for (let i = 0; i < handles.length; i++) {
+      if (handles[i] == expectedhandle) {
+        cardId = cardIds[i];
+        break;
+      }
+    }
+
+    console.log('cardId ', cardId);
+
+    await page.click('#' + cardId + ' > div > a');
+
   }
 
 }

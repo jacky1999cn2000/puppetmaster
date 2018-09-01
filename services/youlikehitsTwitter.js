@@ -27,24 +27,12 @@ module.exports = {
 
     const ids = followpIds.concat(followIds);
 
-    // similarly, get all points for each link
-    const followpPoints = await page.evaluate(
-      () => [...document.querySelectorAll('.followp > center')]
-      .map(element => parseInt(element.innerText.split(':')[1]))
-    );
-
-    const followPoints = await page.evaluate(
-      () => [...document.querySelectorAll('.follow > center')]
-      .map(element => parseInt(element.innerText.split(':')[1]))
-    );
-
-    const points = followpPoints.concat(followPoints);
+    // simply return if the page has no follows
+    if (ids.length == 0) {
+      return false;
+    }
 
     for (let i = 0; i < ids.length; i++) {
-
-      if (typeof points[i] != 'undefined' && points[i] < 2) {
-        return false;
-      }
 
       // based on id, get follow/confirm button
       let followButton = '#' + ids[i] + ' > center > center > a:nth-child(1)';
@@ -151,7 +139,7 @@ module.exports = {
 
     const ids = cardpIds.concat(cardIds);
 
-    // don't need to get points since we can only make 15 likes per hour, so simply return if the page not has likes
+    // simply return if the page has no likes
     if (ids.length == 0) {
       return false;
     }
@@ -276,7 +264,7 @@ module.exports = {
 
     const ids = cardpIds.concat(cardIds);
 
-    // don't need to get points since we won't retweet too many, so simply return if the page not has likes
+    // simply return if the page has no retweets
     if (ids.length == 0) {
       return false;
     }

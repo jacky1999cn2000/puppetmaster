@@ -18,9 +18,25 @@ module.exports = {
     await page.waitFor(500);
   },
 
-  switchTwitterUser: async (page, browser, config) => {
+  addTwitterUser: async (page, browser, config) => {
 
-    logger.log('youlikehits:switchTwitterUser', 2);
+    logger.log('youlikehits:addTwitterUser', 2);
+
+    let expectedhandle = config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_handle' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser];
+    console.log('expectedhandle', expectedhandle);
+
+    await page.goto(config.youlikehits_twitter_users, {
+      waituntil: "networkidle0"
+    });
+
+    await page.type('#username', expectedhandle);
+    await page.click('#verifybutton');
+    await page.waitFor(2000);
+  },
+
+  removeTwitterUser: async (page, browser, config) => {
+
+    logger.log('youlikehits:removeTwitterUser', 2);
 
     let expectedhandle = config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_handle' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser];
     console.log('expectedhandle', expectedhandle);
@@ -48,7 +64,7 @@ module.exports = {
       }
     }
 
-    await page.click('#' + cardId + ' > div > a');
+    await page.click('#' + cardId + ' > a');
 
   }
 

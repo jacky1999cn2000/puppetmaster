@@ -15,15 +15,17 @@ module.exports = {
 
     await youlikehits.login(page, browser, config);
 
+    await youlikehits.addTwitterUser(page, browser, config);
+
   },
 
   reset: async (page, browser, config) => {
 
     logger.log('setup:reset');
 
-    config = await manager.next(config);
+    await youlikehits.removeTwitterUser(page, browser, config);
 
-    await youlikehits.switchTwitterUser(page, browser, config);
+    config = await manager.next(config);
 
     if (config.changeyoulikehitsuser) {
       logger.log('change youlikehits user ', 2);

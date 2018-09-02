@@ -40,6 +40,23 @@ module.exports = {
     }
 
     process.exit(0);
+  },
+
+  checkaccount: async (page, browser, config) => {
+
+    utils.log('setup:checkaccount');
+
+    let healthy = await twitter.login(page, browser, config);
+    config = await manager.update(config, 'twitter', 'healthy', healthy);
+
+    config = await manager.next(config);
+
+    if (config.changeyoulikehitsuser) {
+      config = await manager.changeyoulikehitsuser(config);
+    }
+
+    process.exit(0);
+
   }
 
 }

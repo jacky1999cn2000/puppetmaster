@@ -29,13 +29,21 @@ async function execute() {
     height
   });
 
-  await setup.init(pages[0], browser, config);
+  if (config.task == 'accountcheck') {
 
-  if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done) {
-    await twitter.operate(pages[0], browser, config);
+    await setup.checkaccount(pages[0], browser, config);
+
+  } else if (config.task == 'earnpoints') {
+
+    await setup.init(pages[0], browser, config);
+
+    if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done) {
+      await twitter.operate(pages[0], browser, config);
+    }
+
+    await setup.reset(pages[0], browser, config);
+
   }
-
-  await setup.reset(pages[0], browser, config);
 
 };
 

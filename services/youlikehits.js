@@ -1,13 +1,13 @@
 'use strict';
 
 const _ = require('lodash');
-const logger = require('./logger');
+const utils = require('./utils');
 
 module.exports = {
 
   login: async (page, browser, config) => {
 
-    logger.log('youlikehits:login', 2);
+    utils.log('youlikehits:login', 2);
 
     await page.goto(config.youlikehits_url, {
       waituntil: "networkidle0"
@@ -20,7 +20,7 @@ module.exports = {
 
   addTwitterUser: async (page, browser, config) => {
 
-    logger.log('youlikehits:addTwitterUser', 2);
+    utils.log('youlikehits:addTwitterUser', 2);
 
     let expectedhandle = config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_handle' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser];
     console.log('expectedhandle', expectedhandle);
@@ -36,7 +36,7 @@ module.exports = {
 
   removeTwitterUser: async (page, browser, config) => {
 
-    logger.log('youlikehits:removeTwitterUser', 2);
+    utils.log('youlikehits:removeTwitterUser', 2);
 
     let expectedhandle = config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_handle' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser];
     console.log('expectedhandle', expectedhandle);

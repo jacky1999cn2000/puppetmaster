@@ -1,13 +1,13 @@
 'use strict';
 
 const _ = require('lodash');
-const logger = require('./logger');
+const utils = require('./utils');
 
 module.exports = {
 
   follow: async (page, browser, config) => {
 
-    logger.log('youlikehitsTwitter:follow', 2);
+    utils.log('youlikehitsTwitter:follow', 2);
 
     // go to twitter follower link
     await page.goto(config.youlikehits_twitter_followers, {
@@ -29,7 +29,7 @@ module.exports = {
 
     // simply return if the page has no follows
     if (ids.length == 0) {
-      return false;
+      return;
     }
 
     for (let i = 0; i < ids.length; i++) {
@@ -49,7 +49,7 @@ module.exports = {
 
         if (target.url() !== 'about:blank') {
 
-          // await logger.log(`following: ${target.url()}`, 1);
+          // await utils.log(`following: ${target.url()}`, 1);
 
           try {
             twitterpage = await target.page();
@@ -113,13 +113,13 @@ module.exports = {
 
     } // for loop
 
-    return true;
+    return;
 
   }, // follow method
 
   like: async (page, browser, config) => {
 
-    logger.log('youlikehitsTwitter:like', 2);
+    utils.log('youlikehitsTwitter:like', 2);
 
     // go to twitter likes link
     await page.goto(config.youlikehits_twitter_likes, {
@@ -141,7 +141,7 @@ module.exports = {
 
     // simply return if the page has no likes
     if (ids.length == 0) {
-      return false;
+      return;
     }
 
     // get all iframes on the page, and filter for 'like' iframes
@@ -174,7 +174,7 @@ module.exports = {
 
         if (target.url() !== 'about:blank') {
 
-          // await logger.log(`liking: ${target.url()}`, 1);
+          // await utils.log(`liking: ${target.url()}`, 1);
 
           try {
             twitterpage = await target.page();
@@ -238,13 +238,13 @@ module.exports = {
 
     } // for loop
 
-    return true;
+    return;
 
   }, // like method
 
   retweet: async (page, browser, config) => {
 
-    logger.log('youlikehitsTwitter:retweet', 2);
+    utils.log('youlikehitsTwitter:retweet', 2);
 
     // go to twitter retweets link
     await page.goto(config.youlikehits_twitter_retweets, {
@@ -266,7 +266,7 @@ module.exports = {
 
     // simply return if the page has no retweets
     if (ids.length == 0) {
-      return false;
+      return;
     }
 
     // get all iframes on the page, and filter for 'retweet' iframes
@@ -299,7 +299,7 @@ module.exports = {
 
         if (target.url() !== 'about:blank') {
 
-          // await logger.log(`retweeting: ${target.url()}`, 1);
+          // await utils.log(`retweeting: ${target.url()}`, 1);
 
           try {
             twitterpage = await target.page();
@@ -363,7 +363,7 @@ module.exports = {
 
     } // for loop
 
-    return true;
+    return;
 
   } // retweet method
 

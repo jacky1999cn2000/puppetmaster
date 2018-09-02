@@ -1,13 +1,13 @@
 'use strict';
 
 const _ = require('lodash');
-const logger = require('./logger');
+const utils = require('./utils');
 
 module.exports = {
 
   login: async (page, browser, config) => {
 
-    logger.log('twitter:login', 2);
+    utils.log('twitter:login', 2);
 
     await page.goto(config.twitter_url, {
       waituntil: "networkidle0"

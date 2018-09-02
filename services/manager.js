@@ -1,14 +1,14 @@
 'use strict';
 
 const _ = require('lodash');
-const logger = require('./logger');
+const utils = require('./utils');
 const jsonfile = require('jsonfile');
 
 module.exports = {
 
   save: (config) => {
 
-    logger.log('manager:save', 2);
+    utils.log('manager:save', 2);
 
     jsonfile.writeFileSync('./config.json', config);
 
@@ -17,7 +17,7 @@ module.exports = {
 
   next: (config) => {
 
-    logger.log('manager:next', 2);
+    utils.log('manager:next', 2);
 
     console.log('whichyoulikehitsuser ', config.whichyoulikehitsuser);
     console.log('whichtwitteruser ', config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser);

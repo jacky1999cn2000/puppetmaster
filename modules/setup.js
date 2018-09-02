@@ -2,14 +2,14 @@
 
 const youlikehits = require('../services/youlikehits');
 const twitter = require('../services/twitter');
-const logger = require('../services/logger');
+const utils = require('../services/utils');
 const manager = require('../services/manager');
 
 module.exports = {
 
   init: async (page, browser, config) => {
 
-    logger.log('setup:init');
+    utils.log('setup:init');
 
     await twitter.login(page, browser, config);
 
@@ -21,14 +21,14 @@ module.exports = {
 
   reset: async (page, browser, config) => {
 
-    logger.log('setup:reset');
+    utils.log('setup:reset');
 
     await youlikehits.removeTwitterUser(page, browser, config);
 
     config = await manager.next(config);
 
     if (config.changeyoulikehitsuser) {
-      logger.log('change youlikehits user ', 2);
+      utils.log('change youlikehits user ', 2);
       config.changeyoulikehitsuser = false;
       config.whichyoulikehitsuser = config.whichyoulikehitsuser + 1 > config.youlikehits_user_max ? 1 : config.whichyoulikehitsuser + 1;
       manager.save(config);

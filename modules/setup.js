@@ -2,6 +2,7 @@
 
 const youlikehits = require('../services/youlikehits');
 const twitter = require('../services/twitter');
+const funtweets = require('../services/funtweets');
 const utils = require('../services/utils');
 const manager = require('../services/manager');
 
@@ -57,6 +58,15 @@ module.exports = {
 
     process.exit(0);
 
-  }
+  },
+
+  getfuntweets: async (page, browser, config) => {
+
+    utils.log('setup:gettweets');
+
+    await funtweets.get(page, browser, config);
+
+    process.exit(0);
+  },
 
 }

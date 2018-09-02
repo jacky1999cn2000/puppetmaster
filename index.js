@@ -1,11 +1,10 @@
 'use strict';
 
 const puppeteer = require('puppeteer');
-
-const config = require('./config.json');
-
 const setup = require('./modules/setup');
 const twitter = require('./modules/twitter');
+
+const config = require('./config.json');
 
 async function execute() {
 
@@ -32,6 +31,10 @@ async function execute() {
   if (config.task == 'accountcheck') {
 
     await setup.checkaccount(pages[0], browser, config);
+
+  } else if (config.task == 'getfuntweets') {
+
+    await setup.getfuntweets(pages[0], browser, config);
 
   } else if (config.task == 'earnpoints') {
 

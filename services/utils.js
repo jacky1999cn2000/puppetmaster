@@ -17,6 +17,10 @@ module.exports = {
 
     console.log(spaces + '*** ' + content + ' ***');
 
+  },
+
+  getRandomInt: (max) {
+    return Math.floor(Math.random() * Math.floor(max));
   }
 
 }

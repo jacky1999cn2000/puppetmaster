@@ -7,80 +7,32 @@ const manager = require('../services/manager');
 
 module.exports = {
 
-  follow: async (page, browser, config) => {
+  operate: async (page, browser, config) => {
 
-    utils.log('twitter:follow');
+    utils.log('twitter:operate');
 
-    // run follow automation for 5 loops (to avoid rate limit), and break if points below 2
-    let counter = config['youlikehits_user' + config.whichyoulikehitsuser].twitter_follow_counter;
+    let healthy = await manager.getvalue(config, 'twitter', 'healthy');
+
+    if (!healthy) {
+      return;
+    }
+
+    // run all kinds of operations for certain times
+    let counter = config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_counter;
 
     while (counter > 0) {
 
       counter--;
-      config['youlikehits_user' + config.whichyoulikehitsuser].twitter_follow_counter = counter;
+      config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_counter = counter;
       manager.save(config);
 
-      let status = await youlikehitsTwitter.follow(page, browser, config);
-      if (!status) {
-        utils.log('break twitter:follow');
-        break;
-      }
+      await youlikehitsTwitter.follow(page, browser, config);
+      await youlikehitsTwitter.like(page, browser, config);
+      await youlikehitsTwitter.retweet(page, browser, config);
 
     }
 
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_follow_done = true;
-    manager.save(config);
-
-  },
-
-  like: async (page, browser, config) => {
-
-    utils.log('twitter:like');
-
-    // run follow automation for 2 loops (it is likely that this function would break immediately if we already liked 15 posts in past hour)
-    let counter = config['youlikehits_user' + config.whichyoulikehitsuser].twitter_like_counter;
-
-    while (counter > 0) {
-
-      counter--;
-      config['youlikehits_user' + config.whichyoulikehitsuser].twitter_like_counter = counter;
-      manager.save(config);
-
-      let status = await youlikehitsTwitter.like(page, browser, config);
-      if (!status) {
-        utils.log('break twitter:like');
-        break;
-      }
-
-    }
-
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_like_done = true;
-    manager.save(config);
-
-  },
-
-  retweet: async (page, browser, config) => {
-
-    utils.log('twitter:retweet');
-
-    // run follow automation for 2 loops
-    let counter = config['youlikehits_user' + config.whichyoulikehitsuser].twitter_retweet_counter;
-
-    while (counter > 0) {
-
-      counter--;
-      config['youlikehits_user' + config.whichyoulikehitsuser].twitter_retweet_counter = counter;
-      manager.save(config);
-
-      let status = await youlikehitsTwitter.retweet(page, browser, config);
-      if (!status) {
-        utils.log('break twitter:retweet');
-        break;
-      }
-
-    }
-
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_retweet_done = true;
+    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_counter = true;
     manager.save(config);
 
   }

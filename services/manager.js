@@ -23,12 +23,8 @@ module.exports = {
     console.log('whichtwitteruser ', config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser);
 
     // set up current youlikehitsuser's settings
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_follow_done = false;
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_like_done = false;
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_retweet_done = false;
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_follow_counter = 1;
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_like_counter = 1;
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_retweet_counter = 1;
+    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done = false;
+    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_counter = 1;
 
     // if current youlikehitsuser's next twitteruser is bigger than max, meaning the current youlikehitsuser already iterate all its twitter users, so it's time to try a different youlikehitsuser
     if (config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser + 1 > config['youlikehits_user' + config.whichyoulikehitsuser].twitter_user_max) {
@@ -40,6 +36,38 @@ module.exports = {
     jsonfile.writeFileSync('./config.json', config);
 
     return config;
+  },
+
+  update: (config, type, subtype, value) => {
+
+    utils.log('manager:update', 2);
+
+    config['youlikehits_user' + config.whichyoulikehitsuser][type + '_' + subtype + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser] = value;
+
+    jsonfile.writeFileSync('./config.json', config);
+
+    return config;
+
+  },
+
+  changeyoulikehitsuser: (config) => {
+
+    utils.log('manager:change youlikehits user ', 2);
+
+    config.changeyoulikehitsuser = false;
+    config.whichyoulikehitsuser = config.whichyoulikehitsuser + 1 > config.youlikehits_user_max ? 1 : config.whichyoulikehitsuser + 1;
+
+    jsonfile.writeFileSync('./config.json', config);
+
+    return config;
+  },
+
+  getvalue: (config, type, subtype) => {
+
+    utils.log('manager:getvalue', 2);
+
+    return config['youlikehits_user' + config.whichyoulikehitsuser][type + '_' + subtype + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser];
+
   }
 
 }

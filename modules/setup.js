@@ -11,11 +11,14 @@ module.exports = {
 
     utils.log('setup:init');
 
-    await twitter.login(page, browser, config);
+    let healthy = await twitter.login(page, browser, config);
+    config = await manager.update(config, 'twitter', 'healthy', healthy);
 
-    await youlikehits.login(page, browser, config);
-
-    await youlikehits.addTwitterUser(page, browser, config);
+    // if account is blocked, don't need to proceed
+    if (healthy) {
+      await youlikehits.login(page, browser, config);
+      await youlikehits.addTwitterUser(page, browser, config);
+    }
 
   },
 
@@ -23,15 +26,17 @@ module.exports = {
 
     utils.log('setup:reset');
 
-    await youlikehits.removeTwitterUser(page, browser, config);
+    let healthy = await manager.getvalue(config, 'twitter', 'healthy');
+
+    // if account is blocked, don't need to do this
+    if (healthy) {
+      await youlikehits.removeTwitterUser(page, browser, config);
+    }
 
     config = await manager.next(config);
 
     if (config.changeyoulikehitsuser) {
-      utils.log('change youlikehits user ', 2);
-      config.changeyoulikehitsuser = false;
-      config.whichyoulikehitsuser = config.whichyoulikehitsuser + 1 > config.youlikehits_user_max ? 1 : config.whichyoulikehitsuser + 1;
-      manager.save(config);
+      config = await manager.changeyoulikehitsuser(config);
     }
 
     process.exit(0);

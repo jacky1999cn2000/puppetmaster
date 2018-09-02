@@ -34,6 +34,10 @@ module.exports = {
 
     for (let i = 0; i < ids.length; i++) {
 
+      if (i == 1) {
+        break;
+      }
+
       // based on id, get follow/confirm button
       let followButton = '#' + ids[i] + ' > center > center > a:nth-child(1)';
       let confirmButton = '#' + ids[i] + ' > center > center > a:nth-child(2)';
@@ -163,6 +167,10 @@ module.exports = {
 
     for (let i = 0; i < ids.length; i++) {
 
+      if (i == 1) {
+        break;
+      }
+
       let twitterpage = null;
       let decision = 'RESET';
       let state = 'RESET';
@@ -287,6 +295,10 @@ module.exports = {
     }
 
     for (let i = 0; i < ids.length; i++) {
+
+      if (i == 1) {
+        break;
+      }
 
       let twitterpage = null;
       let decision = 'RESET';

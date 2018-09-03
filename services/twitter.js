@@ -33,6 +33,37 @@ module.exports = {
 
     if (startButtons.length != 0) {
       return false;
+    } else {
+      return true;
+    }
+
+  },
+
+  prepare: async (page, browser, config) => {
+
+    utils.log('twitter:prepare', 2);
+
+    await page.goto(config.twitter_url, {
+      waituntil: "networkidle0"
+    });
+    await page.click('#doc > div > div.StaticLoggedOutHomePage-content > div.StaticLoggedOutHomePage-cell.StaticLoggedOutHomePage-utilityBlock > div.StaticLoggedOutHomePage-signupBlock > div.StaticLoggedOutHomePage-signupHeader > a');
+    await page.waitFor(500);
+    await page.type('#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(2) > input', config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_username' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser], {
+      delay: 20
+    });
+    await page.type('#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(3) > input', config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_password'], {
+      delay: 20
+    });
+    await page.click('#page-container > div > div.signin-wrapper > form > div.clearfix > button');
+    await page.waitFor(2000);
+
+    // see if account was temporariely blocked by detecting the existence of the "start" button
+    const startButtons = await page.evaluate(
+      () => [...document.querySelectorAll('body > div.PageContainer > div > form > input.Button.EdgeButton.EdgeButton--primary')]
+    );
+
+    if (startButtons.length != 0) {
+      return false;
     }
 
     // post tweet
@@ -41,9 +72,10 @@ module.exports = {
     await page.waitFor(500);
 
     let tweet = tweets.shift();
-    await page.type('#timeline > div.timeline-tweet-box > div > form > div.tweet-content > div.RichEditor.RichEditor--emojiPicker.is-fakeFocus', tweet, {
+    await page.type('#tweet-box-home-timeline', tweet, {
       delay: 20
     });
+
     await page.click('#timeline > div.timeline-tweet-box > div > form > div.TweetBoxToolbar > div.TweetBoxToolbar-tweetButton.tweet-button > button');
     await page.waitFor(2000);
 
@@ -69,12 +101,12 @@ module.exports = {
       await page.click(unFollowButton);
       await page.waitFor(500);
     }
-
+    await page.waitFor(2000);
     // save tweets back to file
     jsonfile.writeFileSync(__dirname + '/../notes/tweets.json', tweets);
 
     return true;
 
-  }
+  },
 
 }

@@ -24,6 +24,7 @@ module.exports = {
 
     // set up current youlikehitsuser's settings
     config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done = false;
+    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_preparation_done = false;
 
     // if current youlikehitsuser's next twitteruser is bigger than max, meaning the current youlikehitsuser already iterate all its twitter users, so it's time to try a different youlikehitsuser
     if (config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser + 1 > config['youlikehits_user' + config.whichyoulikehitsuser].twitter_user_max) {

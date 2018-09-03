@@ -8,6 +8,18 @@ const manager = require('../services/manager');
 
 module.exports = {
 
+  prepare: async (page, browser, config) => {
+
+    utils.log('setup:prepare');
+
+    await twitter.prepare(page, browser, config);
+
+    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_preparation_done = true;
+    manager.save(config);
+
+    process.exit(0);
+  },
+
   init: async (page, browser, config) => {
 
     utils.log('setup:init');

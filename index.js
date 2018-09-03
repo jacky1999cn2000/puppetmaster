@@ -38,13 +38,21 @@ async function execute() {
 
   } else if (config.task == 'earnpoints') {
 
-    await setup.init(pages[0], browser, config);
+    if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_preparation_done) {
+      // tweeting and deleting followers
+      await setup.prepare(pages[0], browser, config);
 
-    if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done) {
-      await twitter.operate(pages[0], browser, config);
+    } else {
+      // earn points - following, liking, and retweeting
+      await setup.init(pages[0], browser, config);
+
+      if (!config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done) {
+        await twitter.operate(pages[0], browser, config);
+      }
+
+      await setup.reset(pages[0], browser, config);
+
     }
-
-    await setup.reset(pages[0], browser, config);
 
   }
 

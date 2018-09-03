@@ -12,10 +12,16 @@ module.exports = {
     await page.goto(config.youlikehits_url, {
       waituntil: "networkidle0"
     });
-    await page.type('input#username', config['youlikehits_username' + config.whichyoulikehitsuser]);
-    await page.type('input#password', config.youlikehits_password);
-    await page.click('#bodybg > table.mainbody > tbody > tr > td > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > table.maintable > tbody > tr:nth-child(2) > td > center > table > tbody > tr:nth-child(3) > td > input[type="submit"]');
-    await page.waitFor(500);
+    try {
+      await page.type('input#username', config['youlikehits_username' + config.whichyoulikehitsuser]);
+      await page.type('input#password', config.youlikehits_password);
+      await page.click('#bodybg > table.mainbody > tbody > tr > td > table:nth-child(1) > tbody > tr > td > table > tbody > tr > td:nth-child(2) > table.maintable > tbody > tr:nth-child(2) > td > center > table > tbody > tr:nth-child(3) > td > input[type="submit"]');
+      await page.waitFor(500);
+    } catch (e) {
+      // console.log(e.name);
+      // console.log(e.message);
+      process.exit(1);
+    }
   },
 
   addTwitterUser: async (page, browser, config) => {

@@ -12,6 +12,7 @@ module.exports = {
     await page.goto(config.youlikehits_url, {
       waituntil: "networkidle0"
     });
+    await page.waitFor(2000);
     try {
       await page.type('input#username', config['youlikehits_username' + config.whichyoulikehitsuser]);
       await page.type('input#password', config.youlikehits_password);

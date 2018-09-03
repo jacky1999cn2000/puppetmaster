@@ -150,7 +150,7 @@ module.exports = {
       return;
     }
 
-    const randomInt = utils.getRandomInt(3) + 2; // 2-4
+    const randomInt = utils.getRandomInt(2) + 2; // 2-3
 
     // get all iframes on the page, and filter for 'like' iframes
     const frames = await page.frames();
@@ -281,7 +281,7 @@ module.exports = {
       return;
     }
 
-    const randomInt = utils.getRandomInt(3) + 3; // 3-5
+    const randomInt = utils.getRandomInt(3) + 2; // 2-4
 
     // get all iframes on the page, and filter for 'retweet' iframes
     const frames = await page.frames();

@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const utils = require('./utils');
+const manager = require('./manager');
 
 module.exports = {
 
@@ -77,7 +78,7 @@ module.exports = {
             // for "of null" error, we need to skip the item, and then restart the process;
             // for "timeout" error, we need to skip the item, and continue
             // otherwise, confirm and continue
-            if (e.message.indexOf('of null') != -1) {
+            if (e.message.indexOf('\'close\' of null') != -1) {
               decision = 'SKIP';
               state = 'EXIT';
             } else if (e.message.indexOf('timeout') != -1) {
@@ -112,6 +113,8 @@ module.exports = {
 
         if (state == 'EXIT') {
           console.log('exit...');
+          config['youlikehits_user' + config.whichyoulikehitsuser].twitter_preparation_done = false;
+          manager.save(config);
           process.exit(1);
         }
 
@@ -208,7 +211,7 @@ module.exports = {
             // for "of null" error, we need to skip the item, and then restart the process;
             // for "timeout" error, we need to skip the item, and continue
             // otherwise, confirm and continue
-            if (e.message.indexOf('of null') != -1) {
+            if (e.message.indexOf('\'close\' of null') != -1) {
               decision = 'SKIP';
               state = 'EXIT';
             } else if (e.message.indexOf('timeout') != -1) {
@@ -243,6 +246,8 @@ module.exports = {
 
         if (state == 'EXIT') {
           console.log('exit...');
+          config['youlikehits_user' + config.whichyoulikehitsuser].twitter_preparation_done = false;
+          manager.save(config);
           process.exit(1);
         }
 
@@ -339,7 +344,7 @@ module.exports = {
             // for "of null" error, we need to skip the item, and then restart the process;
             // for "timeout" error, we need to skip the item, and continue
             // otherwise, confirm and continue
-            if (e.message.indexOf('of null') != -1) {
+            if (e.message.indexOf('\'close\' of null') != -1) {
               decision = 'SKIP';
               state = 'EXIT';
             } else if (e.message.indexOf('timeout') != -1) {
@@ -374,6 +379,8 @@ module.exports = {
 
         if (state == 'EXIT') {
           console.log('exit...');
+          config['youlikehits_user' + config.whichyoulikehitsuser].twitter_preparation_done = false;
+          manager.save(config);
           process.exit(1);
         }
 

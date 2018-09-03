@@ -17,7 +17,7 @@ module.exports = {
       return;
     }
 
-    // run all kinds of operations for certain times
+    // earn points
     await youlikehitsTwitter.follow(page, browser, config);
     await youlikehitsTwitter.like(page, browser, config);
     await youlikehitsTwitter.retweet(page, browser, config);

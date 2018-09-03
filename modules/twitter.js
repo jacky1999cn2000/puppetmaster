@@ -19,8 +19,8 @@ module.exports = {
 
     // earn points
     await youlikehitsTwitter.follow(page, browser, config);
-    await youlikehitsTwitter.like(page, browser, config);
-    await youlikehitsTwitter.retweet(page, browser, config);
+    // await youlikehitsTwitter.like(page, browser, config);
+    // await youlikehitsTwitter.retweet(page, browser, config);
 
     config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done = true;
     manager.save(config);

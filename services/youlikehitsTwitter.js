@@ -32,9 +32,11 @@ module.exports = {
       return;
     }
 
+    const randomInt = utils.getRandomInt(5) + 1;
+
     for (let i = 0; i < ids.length; i++) {
 
-      if (i == 1) {
+      if (i == randomInt) {
         break;
       }
 
@@ -148,6 +150,8 @@ module.exports = {
       return;
     }
 
+    const randomInt = utils.getRandomInt(3) + 1;
+
     // get all iframes on the page, and filter for 'like' iframes
     const frames = await page.frames();
 
@@ -167,7 +171,7 @@ module.exports = {
 
     for (let i = 0; i < ids.length; i++) {
 
-      if (i == 1) {
+      if (i == randomInt) {
         break;
       }
 
@@ -277,6 +281,8 @@ module.exports = {
       return;
     }
 
+    const randomInt = utils.getRandomInt(5) + 1;
+
     // get all iframes on the page, and filter for 'retweet' iframes
     const frames = await page.frames();
 
@@ -296,7 +302,7 @@ module.exports = {
 
     for (let i = 0; i < ids.length; i++) {
 
-      if (i == 1) {
+      if (i == randomInt) {
         break;
       }
 

@@ -18,21 +18,11 @@ module.exports = {
     }
 
     // run all kinds of operations for certain times
-    let counter = config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_counter;
+    await youlikehitsTwitter.follow(page, browser, config);
+    await youlikehitsTwitter.like(page, browser, config);
+    await youlikehitsTwitter.retweet(page, browser, config);
 
-    while (counter > 0) {
-
-      counter--;
-      config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_counter = counter;
-      manager.save(config);
-
-      await youlikehitsTwitter.follow(page, browser, config);
-      await youlikehitsTwitter.like(page, browser, config);
-      await youlikehitsTwitter.retweet(page, browser, config);
-
-    }
-
-    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_counter = true;
+    config['youlikehits_user' + config.whichyoulikehitsuser].twitter_operation_done = true;
     manager.save(config);
 
   }

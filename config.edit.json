@@ -11,7 +11,7 @@
   "youlikehits_username2": "lestimothy",
   "youlikehits_password": "",
   "youlikehits_user_max": 2,
-  "whichyoulikehitsuser": 1,
+  "whichyoulikehitsuser": 2,
   "changeyoulikehitsuser": false,
   "youlikehits_user1": {
     "twitter_username1": "xihongshishoufu@gmail.com",
@@ -29,8 +29,11 @@
     "twitter_username5": "liegfuoking@gmail.com",
     "twitter_handle5": "fuoking",
     "twitter_healthy5": true,
+    "twitter_username6": "annasong@protonmail.com",
+    "twitter_handle6": "annason09548116",
+    "twitter_healthy6": true,
     "twitter_password": "",
-    "twitter_user_max": 5,
+    "twitter_user_max": 6,
     "twitter_preparation_done": false,
     "twitter_operation_done": false,
     "whichtwitteruser": 1

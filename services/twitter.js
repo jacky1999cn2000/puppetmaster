@@ -78,7 +78,7 @@ module.exports = {
       });
 
       await page.click('#timeline > div.timeline-tweet-box > div > form > div.TweetBoxToolbar > div.TweetBoxToolbar-tweetButton.tweet-button > button');
-      await page.waitFor(2000);
+      await page.waitFor(4000);
 
       // delete followers
       await page.click('#page-container > div.dashboard.dashboard-left > div.DashboardProfileCard.module > div > div.ProfileCardStats > ul > li:nth-child(2) > a');

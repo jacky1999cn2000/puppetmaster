@@ -15,7 +15,7 @@ async function execute() {
   const height = 800
 
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: [
       `--window-size=${width},${height}`
     ],

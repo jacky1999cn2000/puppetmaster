@@ -73,15 +73,20 @@ module.exports = {
       await page.waitFor(500);
 
       let tweet = tweets.shift();
+      // save tweets back to file
+      jsonfile.writeFileSync(__dirname + '/../notes/tweets.json', tweets);
+
       await page.type('#tweet-box-home-timeline', tweet, {
         delay: 20
       });
 
       await page.click('#timeline > div.timeline-tweet-box > div > form > div.TweetBoxToolbar > div.TweetBoxToolbar-tweetButton.tweet-button > button');
-      await page.waitFor(4000);
+      await page.waitFor(5000);
 
       // delete followers
-      await page.click('#page-container > div.dashboard.dashboard-left > div.DashboardProfileCard.module > div > div.ProfileCardStats > ul > li:nth-child(2) > a');
+      await page.goto(config.twitter_url + config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_handle' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser] + '/following', {
+        waituntil: "networkidle0"
+      });
       await page.waitFor(2000);
 
       const streamItemUserIds = await page.evaluate(
@@ -109,9 +114,6 @@ module.exports = {
       // console.log(e.message);
       process.exit(1);
     }
-
-    // save tweets back to file
-    jsonfile.writeFileSync(__dirname + '/../notes/tweets.json', tweets);
 
     return true;
 

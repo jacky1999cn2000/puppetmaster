@@ -65,7 +65,7 @@ module.exports = {
     let cardId;
 
     for (let i = 0; i < handles.length; i++) {
-      if (handles[i] == expectedhandle) {
+      if (handles[i].toUpperCase() == expectedhandle.toUpperCase()) {
         cardId = cardIds[i];
         break;
       }

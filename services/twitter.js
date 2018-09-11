@@ -15,6 +15,7 @@ module.exports = {
     await page.goto(config.twitter_url, {
       waituntil: "networkidle0"
     });
+    await page.waitFor(1000);
     await page.click('#doc > div > div.StaticLoggedOutHomePage-content > div.StaticLoggedOutHomePage-cell.StaticLoggedOutHomePage-utilityBlock > div.StaticLoggedOutHomePage-signupBlock > div.StaticLoggedOutHomePage-noSignupForm > div > a.js-nav.EdgeButton.EdgeButton--medium.EdgeButton--secondary.StaticLoggedOutHomePage-buttonLogin');
     await page.waitFor(500);
     await page.type('#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(2) > input', config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_username' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser], {
@@ -46,6 +47,7 @@ module.exports = {
     await page.goto(config.twitter_url, {
       waituntil: "networkidle0"
     });
+    await page.waitFor(1000);
     await page.click('#doc > div > div.StaticLoggedOutHomePage-content > div.StaticLoggedOutHomePage-cell.StaticLoggedOutHomePage-utilityBlock > div.StaticLoggedOutHomePage-signupBlock > div.StaticLoggedOutHomePage-signupHeader > a');
     await page.waitFor(500);
     await page.type('#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(2) > input', config['youlikehits_user' + config.whichyoulikehitsuser]['twitter_username' + config['youlikehits_user' + config.whichyoulikehitsuser].whichtwitteruser], {

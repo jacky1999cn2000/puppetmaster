@@ -2,18 +2,29 @@
   "jay.zhao.sfdc999@gmail.com": "http://www.getsmscode.com/",
   "maedahideo128@gmail.com": "+8613408604650",
   "tomdavis1996@protonmail.com": "+8613469493759",
-  "hlieng@protonmail.com": "+8617046786128", <= TextNow 
+  "hlieng@protonmail.com": "+8617046786128", 
   "liegfuoking@gmail.com": "+8618782058204",
   "annasong@protonmail.com": "+8613730441114",
   "qiangdongliu@protonmail.com": "+19782675308",
   "alexis.yang0521@gmail.com": ""
 }
-
+ 
 
 1. Use wechat to sign up, and provide phone number provided by TextNow; 
 2. Login another wechat to scan the QR code
 3. Come back and sign up with same name and phone number
 4. If code not sent over, ask Wechat to call and get the verification code
+
+TextNow:
+For wechat - 
+you can just wait for wechat to call
+
+For others - 
+you can simply make up an email and register it via mobile app; 
+then use chrome incognito to login using same email and password; 
+then send verification code, and it should be visible 
+(not sure if they use IP or what to check, try different network it should work, I used Wifi once and Hotspot the second time)
+
 
 
 "twitter_username7": "xiaobeigu@protonmail.com",
